@@ -2,10 +2,13 @@ import { useState } from 'react';
 import './App.css'
 import { toast } from 'react-toastify';
 import { OptionsList } from './components/optionList';
+import confetti from 'canvas-confetti';
 
 function App() {
   const [options, setOptions] = useState<string[]>([]);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [winnerOption, setWinnerOption] = useState<string | null>(null);
 
   const handleAddOption = () => {
     if (selectedOption?.trim() === '') {
@@ -32,7 +35,17 @@ function App() {
     }
     const randomIndex = Math.floor(Math.random() * options.length);
     const selected = options[randomIndex];
-    toast.success(`La opción ganadora es: "${selected}"`);
+    setWinnerOption(selected);
+    setModalVisible(true);
+    handleCofetti();
+  }
+
+  const handleCofetti = () => {
+    confetti({
+      particleCount: 150,
+      spread: 60,
+      origin: { y: 0.6 }
+    });
   }
 
   const handleClearOptions = () => {
@@ -41,11 +54,9 @@ function App() {
   }
 
   return (
-      
     <div className='mx-auto max-w-4xl p-6 bg-white rounded-xl shadow-lg'>
-      
       <div className='text-center mb-8'>
-        <h1 className='text-4xl font-bold text-indigo-700 mb-2'>Ruleta de Opciones</h1>
+        <h1 className='text-4xl font-bold text-indigo-700 mb-2'>Ruleta</h1>
         <p className='text-gray-600'>Agrega opciones y selecciona una al azar</p>
       </div>
 
@@ -104,8 +115,23 @@ function App() {
           No hay opciones agregadas aún
         </div>
       )}
+
+      {modalVisible && (
+        <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'>
+          <div className='bg-white p-6 rounded-lg shadow-lg text-center'>
+            <h2 className='text-2xl font-bold text-indigo-700 mb-4'>¡Opción Ganadora!</h2>
+            <p className='text-lg text-gray-800 mb-6'>{winnerOption}</p>
+            <button 
+              onClick={() => setModalVisible(false)} 
+              className='px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors'
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
 
-export default App
+export default App;
