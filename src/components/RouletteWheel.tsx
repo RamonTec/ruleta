@@ -33,44 +33,44 @@ export const RouletteWheel = ({
 
     
   const spin = () => {
-    if (isSpinning || segmentCount === 0) return;
+  if (isSpinning || segmentCount === 0) return;
 
-    const randomIdx = Math.floor(Math.random() * segmentCount);
+  const randomIdx = Math.floor(Math.random() * segmentCount);
 
-    const minTurns = 15;
-    const maxTurns = 20;
-    const fullTurns = minTurns + Math.random() * (maxTurns - minTurns);
+  const minTurns = 15;
+  const maxTurns = 20;
+  const fullTurns = minTurns + Math.random() * (maxTurns - minTurns);
 
-    const landingAngle = randomIdx * segmentAngle + segmentAngle / 2;
+  const landingAngle = randomIdx * segmentAngle + segmentAngle / 2;
 
-    const currentMod = ((rotationRef.current % 360) + 360) % 360;
-    let delta = (POINTER_ANGLE - landingAngle - currentMod) % 360;
-    if (delta < 0) delta += 360;
+  const currentMod = ((rotationRef.current % 360) + 360) % 360;
+  let delta = (POINTER_ANGLE - landingAngle - currentMod) % 360;
+  if (delta < 0) delta += 360;
 
-    const targetDeg = rotationRef.current + fullTurns * 360 + delta;
+  const targetDeg = rotationRef.current + fullTurns * 360 + delta;
 
-    const el = wheelRef.current;
-    if (!el) return;
+  const el = wheelRef.current;
+  if (!el) return;
 
-    el.style.transition = "none";
-    el.style.transform = `rotate(${rotationRef.current}deg)`;
-    void el.offsetHeight;
+  el.style.transition = "none";
+  el.style.transform = `rotate(${rotationRef.current}deg)`;
+  void el.offsetHeight;
 
-    requestAnimationFrame(() => {
-      el.style.transition = `transform ${SPIN_DURATION}ms cubic-bezier(0.1, 0.7, 0.1, 1)`;
-      el.style.transform = `rotate(${targetDeg}deg)`;
-    });
+  requestAnimationFrame(() => {
+    el.style.transition = `transform ${SPIN_DURATION}ms cubic-bezier(0.1, 0.7, 0.1, 1)`;
+    el.style.transform = `rotate(${targetDeg}deg)`;
+  });
 
-    setIsSpinning(true);
-    setSelectedIdx(null);
+  setIsSpinning(true);
+  setSelectedIdx(null);
 
-    window.setTimeout(() => {
-      setIsSpinning(false);
-      setSelectedIdx(randomIdx);
-      onResult(options[randomIdx], randomIdx);
-      rotationRef.current = targetDeg;
-    }, SPIN_DURATION);
-  };
+  window.setTimeout(() => {
+    setIsSpinning(false);
+    setSelectedIdx(randomIdx);
+    onResult(options[randomIdx], randomIdx);
+    rotationRef.current = targetDeg;
+  }, SPIN_DURATION);
+};
 
   const splitLabel = (txt: string): string[] => {
     if (txt.length <= 14) return [txt];
