@@ -24,7 +24,7 @@ function App() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(options));
     } catch {
-      // ignore storage errors
+      // pending task: handle logic for errors
     }
   }, [options]);
 
@@ -50,7 +50,6 @@ function App() {
     setOptions(prev => [...prev, trimmed]);
     setDraft("");
     toast.success(`Opción “${trimmed}” agregada`);
-    // Mejor UX: vuelve a enfocar para agregar rápido
     requestAnimationFrame(() => inputRef.current?.focus());
   };
 
