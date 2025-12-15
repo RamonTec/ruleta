@@ -116,7 +116,7 @@ function App() {
               </div>
 
               <div className="rounded-2xl ring-1 ring-black/5 bg-white p-4 md:p-6">
-                {options.length > 0 ? (
+                {options.length > 1 ? (
                   <div className="mx-auto max-w-md">
                     <RouletteWheel options={options} onResult={handleResult} />
                   </div>
